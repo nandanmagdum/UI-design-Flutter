@@ -14,7 +14,8 @@ To run this project on your machice
 
 # Login Screen
 
-![2](https://github.com/nandanmagdum/UI-design-Flutter/assets/93419769/06429b56-c4ab-4a74-9b00-1d4b919522a6)
+![login](https://github.com/nandanmagdum/UI-design-Flutter/assets/93419769/af70cf69-77b5-4937-98d9-aa098f72b5b7)
+
 
 # Register Screen 1
 
