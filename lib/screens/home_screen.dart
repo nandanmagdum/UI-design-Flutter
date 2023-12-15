@@ -1,9 +1,5 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:untitled/screens/get_started.dart';
-import 'package:untitled/firebase_funtions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,13 +8,25 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  var currentUser = Data(personName: 'null', category: 'null', qualification: 'null', location: 'null');
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  final borderShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(50),
+    side: BorderSide(color: Colors.white, width: 1),
+  );
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -27,237 +35,363 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: () {
-              Firebase.signOUT();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStartedScreen()));
-            },
-            child: Text("Sign out of ${FirebaseAuth.instance.currentUser!.email}"),
-          ),
-          Container(
-            height: screenHeight * 0.5,
-            width: screenWidth,
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.01,
-                  width: screenWidth,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.account_circle_outlined,
-                      size: 84,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          currentUser.personName,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "500",
-                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(width: 5,),
-                            Text("Connects", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(Icons.security, size: 15,),
-                        SizedBox(height: 10,),
-                        Row(
-                          children: [
-                            Text("100", style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
-                            SizedBox(width: 5,),
-                            Text("Followers", style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: screenWidth,
-                        ),
-                        SizedBox(height: 5,),
-                        Text(currentUser.category, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400)),
-                        SizedBox(height: 5,),
-                        Text(currentUser.qualification, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400)),
-                        SizedBox(height: 5,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(Icons.location_on_outlined, size: 10,),
-                            SizedBox(height: 5,),
-                            Text(currentUser.location, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.chat_outlined, size: 24,),
-                                    SizedBox(width: 5,),
-                                    Text("Chat", style: TextStyle(fontSize: 14)),
-                                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              height: screenHeight * 0.41,
+              width: screenWidth,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.01,
+                    width: screenWidth,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(
+                        Icons.account_circle_outlined,
+                        size: 100,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "John Doe",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                width: screenWidth * 0.1,
+                              ),
+                              Icon(Icons.verified_user_rounded),
+                            ],
+                          ),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "500",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("Connects",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400)),
+                              SizedBox(
+                                width: screenWidth * 0.1,
+                              ),
+                              Text(
+                                "100",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w900),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("Followers",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: screenWidth,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Technology",
+                              style: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.w400)),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Graduate AKTU",
+                              style: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.w400)),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: 10,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text("Delhi",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(
+                            height: screenHeight * 0.01,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 140,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          borderShape),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Color(0xFF2b2b2b))),
+                                  onPressed: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.chat_outlined,
+                                        color: Color(0xFFf2f2f2),
+                                        size: 24,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Chat",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFFf2f2f2))),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 10,),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(FontAwesomeIcons.bolt, size: 24,),
-                                    SizedBox(width: 5,),
-                                    Text("Connect", style: TextStyle(fontSize: 14)),
-                                  ],
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              Container(
+                                width: 140,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          borderShape),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Color(0xFF2b2b2b))),
+                                  onPressed: () {},
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        // FontAwesomeIcons.bolt,
+                                        Icons.bolt_outlined,
+                                        color: Color(0xFFf2f2f2),
+                                        size: 28,
+                                      ),
+                                      // SizedBox(
+                                      //   width: 5,
+                                      // ),
+                                      Text("Connect",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFFf2f2f2))),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 10,),
-                            Icon(Icons.settings),
-                          ],
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              Icon(
+                                FluentIcons.settings_16_regular,
+                                size: 30,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: screenWidth,
+                              ),
+                              Text("About",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700)),
+                              Text(
+                                "Lorem ipsum sit amet consectetur adipiscing as eilt Ut et",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 100,
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    child: TabBar(
+                      controller: _tabController,
+                      tabs: [
+                        Tab(
+                          text: "Fortue",
                         ),
-                        SizedBox(height: 10,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(width: screenWidth,),
-                            Text("About", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
-                            SizedBox(height: 10,),
-                            Text("Lorem ipsum sit amet consectetur adipiscing as asdfe eilt Ut et"),
-                            SizedBox(height: 10,),
-                          ],
+                        Tab(
+                          text: "Posts",
+                        ),
+                        Tab(
+                          text: "Group",
+                        ),
+                        Tab(
+                          text: "Reactions",
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Container(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          Center(child: Text('Content for Fortue')),
+                          Center(child: Text('Content for Posts')),
+                          Center(child: Text('Content for Group')),
+                          Center(child: Text('Content for Reactions')),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("Fortue", style: TextStyle(fontSize: 15)),
-              Text("Posts", style: TextStyle(fontSize: 15)),
-              Text("Group", style: TextStyle(fontSize: 15)),
-              Text("Reactions", style: TextStyle(fontSize: 15)),
-            ],
-          ),
-          Divider(),
-        ],
+          ],
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedFontSize: 0,
-        iconSize: 30,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_alt_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: '',
-          ),
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 70,
+        child: BottomNavigationBar(
+          selectedFontSize: 0,
+          iconSize: 30,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              // icon: Icon(Icons.home_filled),
+              icon: Icon(FluentIcons.home_12_regular),
+
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              // icon: Icon(Icons.lightbulb),
+              icon: Icon(FluentIcons.lightbulb_16_regular),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.note_alt_outlined),
+              // icon: Icon(FluentIcons.note_edit_20_regular),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_none_outlined),
+              label: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: '',
+            ),
+          ],
+        ),
       ),
     );
   }
-
-  Future<void> fetchData() async {
-    try {
-      // Get the current user
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-        // Retrieve the email of the current user
-        final userEmail = user.email;
-
-        // Reference to the Firestore collection and document
-        final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-        // Fetch data from Firestore
-        final snapshot = await userDocRef.get();
-
-        if (snapshot.exists) {
-          // Data exists, update the 'currentUser' object with fetched data
-          setState(() {
-            currentUser = Data(
-              personName: snapshot.get('name'),
-              category: snapshot.get('category'),
-              qualification: snapshot.get('qualification'),
-              location: snapshot.get('location'),
-            );
-          });
-
-          print("Successfully fetched data ...");
-          print("Printing currentUser object : ${currentUser.personName}");
-        } else {
-          print('Document does not exist');
-        }
-      } else {
-        print('User not signed in');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
-    }
-  }
 }
+//   Future<void> fetchData() async {
+//     try {
+//       // Get the current user
+//       User? user = FirebaseAuth.instance.currentUser;
 
-class Data {
-  String personName;
-  String category;
-  String qualification;
-  String location;
+//       if (user != null) {
+//         // Retrieve the email of the current user
+//         final userEmail = user.email;
 
-  Data({
-    required this.personName,
-    required this.category,
-    required this.qualification,
-    required this.location,
-  });
-}
+//         // Reference to the Firestore collection and document
+//         final userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+//         // Fetch data from Firestore
+//         final snapshot = await userDocRef.get();
+
+//         if (snapshot.exists) {
+//           // Data exists, update the 'currentUser' object with fetched data
+//           setState(() {
+//             currentUser = Data(
+//               personName: snapshot.get('name'),
+//               category: snapshot.get('category'),
+//               qualification: snapshot.get('qualification'),
+//               location: snapshot.get('location'),
+//             );
+//           });
+
+//           print("Successfully fetched data ...");
+//           print("Printing currentUser object : ${currentUser.personName}");
+//         } else {
+//           print('Document does not exist');
+//         }
+//       } else {
+//         print('User not signed in');
+//       }
+//     } catch (e) {
+//       print('Error fetching data: $e');
+//     }
+//   }
+// }
+// class MyCustomTabBar extends StatelessWidget {
+//   final TabController controller; // Receive the controller
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return DefaultTabController(
+//       length: 3,
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Tab(text: 'Posts', controller: controller), // Use the controller for each Tab
+//           const SizedBox(width: 10),
+//           Tab(text: 'Reels', controller: controller),
+//           const SizedBox(width: 10),
+//           Tab(text: 'Tags', controller: controller),
+//         ],
+//       ),
+//     );
+//   }
+// }
