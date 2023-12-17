@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:untitled/screens/home_screen.dart';
+import 'package:untitled/screens/profile_screen.dart';
 class Firebase {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static var user ;

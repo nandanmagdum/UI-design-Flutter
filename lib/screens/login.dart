@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/screens/home_screen.dart';
+import 'package:untitled/screens/profile_screen.dart';
 import 'constants.dart';
 import 'package:untitled/firebase_funtions.dart';
 
